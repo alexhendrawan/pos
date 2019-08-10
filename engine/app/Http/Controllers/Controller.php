@@ -20,7 +20,7 @@ class Controller extends BaseController
 	{
 
 		$client = new Client([
-			'base_uri' => "http://localhost/pos-api/api/",
+			'base_uri' => getenv("BASEURL_API"),
 			'headers' => [
 				'Content-Type' => 'application/json',
 				'Authorization' => 'Bearer ' . session()->get('apitokenpos')
@@ -29,58 +29,64 @@ class Controller extends BaseController
 		return $client;
 	}
 
-	public function get($url){
+	public function get($url)
+	{
 		try {
 			$response = $this->client()->get($url);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			dd($e);
 		}
 		$result["data"] =  json_decode($response->getBody())->data;
 		return $result;
 	}
 
-	public function post($url, $data){
+	public function post($url, $data)
+	{
 		try {
-			$response = $this->client()->post($url,["json" => $data]);
-		} catch(\Exception $e) {
+			$response = $this->client()->post($url, ["json" => $data]);
+		} catch (\Exception $e) {
 			dd($e->getResponse()->getBody()->getContents());
 		}
-		
+
 		$result["data"] =  json_decode($response->getBody())->data;
 		return $result;
 	}
 
-	public function put($url, $data){
+	public function put($url, $data)
+	{
 		unset($data["_method"]);
 		unset($data["_token"]);
 		try {
-			$response = $this->client()->put($url,["json" => $data]);
-		} catch(\Exception $e) {
+			$response = $this->client()->put($url, ["json" => $data]);
+		} catch (\Exception $e) {
 			dd($e->getResponse()->getBody()->getContents());
 		}
 		$result["data"] =  json_decode($response->getBody())->data;
 		return $result;
 	}
 
-	public function delete($url){
+	public function delete($url)
+	{
 		try {
 			$response = $this->client()->delete($url);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			dd($e->getResponse()->getBody()->getContents());
 		}
-		
+
 		$result["data"] =  json_decode($response->getBody())->data;
 		return $result;
 	}
 
-	public function backmessage($msg){
-		return redirect()->back()->with("message",$msg);
+	public function backmessage($msg)
+	{
+		return redirect()->back()->with("message", $msg);
 	}
 
-	public function getData($url){
+	public function getData($url)
+	{
 		try {
 			$response = $this->client()->get($url);
-		} catch(\Exception $e) {
+		} catch (\Exception $e) {
 			dd($e->getResponse()->getBody()->getContents());
 		}
 		$data =  json_decode($response->getBody())->data;
