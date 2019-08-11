@@ -124,7 +124,7 @@ Penjualan
 											<a href="<?php echo url("/") ?>/penjualan/{{$key->sales->id}}"
 												class="btn btn-xs btn-warning dis" style="width: 100%">Edit</a><br>
 											<button class="btn btn-xs btn-danger dis"
-												onclick="konfirmasi({{$key->id}},'penjualan')"
+												onclick="konfirmasi({{$key->sales->id}},'penjualan')"
 												style="width: 100%">Delete</button><br>
 											<button onclick="printfaktur({{$key->sales->id}},'penjualan')"
 												class="btn btn-xs btn-success " style="width: 100%">Print Faktur

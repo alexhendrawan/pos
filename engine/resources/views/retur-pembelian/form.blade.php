@@ -55,8 +55,7 @@ Retur Pembelian
 							<input autocomplete="off" type="hidden" disabled="" name="" class="gtotalretur">
 						</div>
 						<div class="form-group col-md-12">
-							<input autocomplete="off" type="submit" class="form-control btn btn-info dis"
-								value="Create">
+							<input autocomplete="off" type="submit" class="form-control btn btn-info dis" value="Create">
 						</div>
 					</div>
 
@@ -120,226 +119,221 @@ Retur Pembelian
 
 <script type="text/javascript">
 	$('.supplier').select2({
-    selectOnClose: true,
-    placeholder: 'Pilih Supplier',
-    ajax: {
-      url: "{!! url('/') !!}" + '/ajax/supplier',
-      dataType: 'json',
-      delay: 600,
-      processResults: function (data) {
-        return {
-          results: $.map(data, function (item) {
-            return {
-              text: item.supplier_name,
-              id: item.id
-            }
-          })
-        };
-      },
-      cache: true
-    }
-  });
+		selectOnClose: true,
+		placeholder: 'Pilih Supplier',
+		ajax: {
+			url: "{!! url('/') !!}" + '/ajax/supplier',
+			dataType: 'json',
+			delay: 600,
+			processResults: function(data) {
+				return {
+					results: $.map(data, function(item) {
+						return {
+							text: item.supplier_name,
+							id: item.id
+						}
+					})
+				};
+			},
+			cache: true
+		}
+	});
 
-  $(".supplier").change(function(){
-    $.ajax({
-      url: "{!! url('/') !!}" + '/ajax/supplier/'+$(".supplier").val(),
-      method: "get",
-      success: function (response) {
-        $("#alamatsupplier").text(response.data.supplier_address);
-        $("#teleponsupplier").text(response.data.phone_num);
-      },
-      error: function (xhr, statusCode, error) {
-      }
-    });
-    $('.invbysupplier').select2({
-      selectOnClose: true,
-      placeholder: 'Pilih Nomor',
-      ajax: {
-        url: "{!! url('/') !!}" + '/ajax/purchase_invoice/'+ $(".supplier").val() +"/supplier",
-        dataType: 'json',
-        delay: 600,
-        processResults: function (data) {
-          return {
-            results: $.map(data, function (item) {
-              return {
-                text: item.internal_invoice_no,
-                id: item.id
-              }
-            })
-          };
-        },
-        cache: true
-      }
-    });
+	$(".supplier").change(function() {
+		$.ajax({
+			url: "{!! url('/') !!}" + '/ajax/supplier/' + $(".supplier").val(),
+			method: "get",
+			success: function(response) {
+				$("#alamatsupplier").text(response.data.supplier_address);
+				$("#teleponsupplier").text(response.data.phone_num);
+			},
+			error: function(xhr, statusCode, error) {}
+		});
+		$('.invbysupplier').select2({
+			selectOnClose: true,
+			placeholder: 'Pilih Nomor',
+			ajax: {
+				url: "{!! url('/') !!}" + '/ajax/purchase_invoice/' + $(".supplier").val() + "/supplier",
+				dataType: 'json',
+				delay: 600,
+				processResults: function(data) {
+					return {
+						results: $.map(data, function(item) {
+							return {
+								text: item.internal_invoice_no,
+								id: item.id
+							}
+						})
+					};
+				},
+				cache: true
+			}
+		});
 
-    $('.inventory').select2({
-      selectOnClose: true,
-      placeholder: 'Pilih Barang',
-      ajax: {
-        url: "{!! url('/') !!}" + '/ajax/supplier/inventoryproperty/'+$(".supplier").val(),
-        dataType: 'json',
-        delay: 600,
-        processResults: function (data) {
-          return {
-            results: $.map(data, function (item) {
-              return {
-                text: item.item_name,
-                id: item.id
-              }
-            })
-          };
-        },
-        cache: true
-      }
-    });
-  })
+		$('.inventory').select2({
+			selectOnClose: true,
+			placeholder: 'Pilih Barang',
+			ajax: {
+				url: "{!! url('/') !!}" + '/ajax/supplier/inventoryproperty/' + $(".supplier").val(),
+				dataType: 'json',
+				delay: 600,
+				processResults: function(data) {
+					return {
+						results: $.map(data, function(item) {
+							return {
+								text: item.item_name,
+								id: item.id
+							}
+						})
+					};
+				},
+				cache: true
+			}
+		});
+	})
 
 
-  $('.invbysupplier').change(function(){
-    $.ajax({
-      url: "{!! url('/') !!}" + '/ajax/purchase_invoice/'+$('.invbysupplier').val(),
-      method: "get",
-      success: function (response) {
-        $("#totalinvoice").text(addDecimal(response.invoice_total));
-        $("#totalbayar").text(addDecimal(response.paid_total));
-      },
-      error: function (xhr, statusCode, error) {
-      }
-    });
-  })
+	$('.invbysupplier').change(function() {
+		$.ajax({
+			url: "{!! url('/') !!}" + '/ajax/purchase_invoice/' + $('.invbysupplier').val(),
+			method: "get",
+			success: function(response) {
+				$("#totalinvoice").text(addDecimal(response.invoice_total));
+				$("#totalbayar").text(addDecimal(response.paid_total));
+			},
+			error: function(xhr, statusCode, error) {}
+		});
+	})
 
 
 
 
-  $(".inventory").change(function () {
-    $.ajax({
-      url: "{!! url('/') !!}" + '/ajax/po_line/'+$(".inventory").val()+'/inventoryproperty',
-      method: "get",
-      success: function (response) {
-        $("#hargaretur").val(response.price_per_satuan_id);
-      },
-      error: function (xhr, statusCode, error) {
-      }
-    });
-  });
+	$(".inventory").change(function() {
+		$.ajax({
+			url: "{!! url('/') !!}" + '/ajax/po_line/' + $(".inventory").val() + '/inventoryproperty',
+			method: "get",
+			success: function(response) {
+				$("#hargaretur").val(response.price_per_satuan_id);
+			},
+			error: function(xhr, statusCode, error) {}
+		});
+	});
 
-  var count = 1;
-  var total =0;
-  $(window).keydown(function(event){
-    if(event.keyCode == 13 ) {
-      var harga = 0;
+	var count = 1;
+	var total = 0;
+	$(window).keydown(function(event) {
+		if (event.keyCode == 13) {
+			var harga = 0;
 
-      var table = document.getElementById("myTable");
-      var row = table.insertRow();
-      row.setAttribute('id', 'row' + count);
+			var table = document.getElementById("myTable");
+			var row = table.insertRow();
+			row.setAttribute('id', 'row' + count);
 
-      var cell0 = row.insertCell(0);
-      cell0.setAttribute('class', 'number');
-      var cell1 = row.insertCell(1);
-      var cell2 = row.insertCell(2);
-      var cell3 = row.insertCell(3);
-      var cell4 = row.insertCell(4);
-      var id = $(".inventory").val();
+			var cell0 = row.insertCell(0);
+			cell0.setAttribute('class', 'number');
+			var cell1 = row.insertCell(1);
+			var cell2 = row.insertCell(2);
+			var cell3 = row.insertCell(3);
+			var cell4 = row.insertCell(4);
+			var id = $(".inventory").val();
 
-      cell1.innerHTML = $(".inventory option:selected").text();
-      cell2.innerHTML = $("#var4").val();
-      cell3.innerHTML = $("#hargaretur").val();
-      cell4.innerHTML = '<button type="button" onclick="voidbarang(' + count + ')">Void</button>'
-      harga = $("#hargaretur").val();
+			cell1.innerHTML = $(".inventory option:selected").text();
+			cell2.innerHTML = $("#var4").val();
+			cell3.innerHTML = $("#hargaretur").val();
+			cell4.innerHTML = '<button type="button" onclick="voidbarang(' + count + ')">Void</button>'
+			harga = $("#hargaretur").val();
 
-      var container = document.getElementById("databarang");
+			var container = document.getElementById("databarang");
 
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = "data-item-id-" + count;
-      input.setAttribute('value', $(".inventory").val());
-      input.setAttribute('id', "data-item-id-" + count);
-      container.appendChild(input);
+			var input = document.createElement("input");
+			input.type = "hidden";
+			input.name = "data-item-id-" + count;
+			input.setAttribute('value', $(".inventory").val());
+			input.setAttribute('id', "data-item-id-" + count);
+			container.appendChild(input);
 
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = "data-qty-id-" + count;
-      input.setAttribute('value', $("#var4").val());
-      input.setAttribute('id', "data-qty-id-" + count);
-      container.appendChild(input);
+			var input = document.createElement("input");
+			input.type = "hidden";
+			input.name = "data-qty-id-" + count;
+			input.setAttribute('value', $("#var4").val());
+			input.setAttribute('id', "data-qty-id-" + count);
+			container.appendChild(input);
 
-      var input = document.createElement("input");
-      input.type = "hidden";
-      input.name = "data-harga-id-" + count;
-      input.setAttribute('value', harga);
-      input.setAttribute('id', "data-harga-id-" + count);
-      container.appendChild(input);
-
+			var input = document.createElement("input");
+			input.type = "hidden";
+			input.name = "data-harga-id-" + count;
+			input.setAttribute('value', harga);
+			input.setAttribute('id', "data-harga-id-" + count);
+			container.appendChild(input);
 
 
-      $(".count").val(count);
-      count++;
-      var objDiv = document.getElementById("bbb");
-      objDiv.scrollTop = objDiv.scrollHeight;
-      updateRowOrder();
-      total+= $("#var4").val() * harga;
-      $(".gtotalretur").val(total);
 
-      $(".gtotalreturtext").text(addDecimal(total));
-      updateRowOrder();
-    }
-  });
+			$(".count").val(count);
+			count++;
+			var objDiv = document.getElementById("bbb");
+			objDiv.scrollTop = objDiv.scrollHeight;
+			updateRowOrder();
+			total += $("#var4").val() * harga;
+			$(".gtotalretur").val(total);
+
+			$(".gtotalreturtext").text(addDecimal(total));
+			updateRowOrder();
+		}
+	});
 </script>
 
 <script type="text/javascript">
 	function voidbarang(count) {
-    var total = $(".gtotalretur").val();
-    var harga = $("#data-harga-id-" + count).val();
-    var qty = $("#data-qty-id-" + count).val();
-    $("#data-unit-id-" + count).remove();
-    $("#data-qtyget-id-" + count).remove();
-    $("#data-qty-id-" + count).remove();
-    $("#data-harga-id-" + count).remove();
-    $("#data-warna-id-" + count).remove();
-    $("#data-item-id-" + count).remove();
-    $("#data-unit-id-" + count).remove();
-    $("#row" + count).remove();
-    count--;
-    total-= parseInt(qty) * parseInt(harga);
-    $(".count").val(count);
-    $(".gtotalretur").val(total);
-    $(".gtotalreturtext").text(addDecimal(total));
+		var total = $(".gtotalretur").val();
+		var harga = $("#data-harga-id-" + count).val();
+		var qty = $("#data-qty-id-" + count).val();
+		$("#data-unit-id-" + count).remove();
+		$("#data-qtyget-id-" + count).remove();
+		$("#data-qty-id-" + count).remove();
+		$("#data-harga-id-" + count).remove();
+		$("#data-warna-id-" + count).remove();
+		$("#data-item-id-" + count).remove();
+		$("#data-unit-id-" + count).remove();
+		$("#row" + count).remove();
+		count--;
+		total -= parseInt(qty) * parseInt(harga);
+		$(".count").val(count);
+		$(".gtotalretur").val(total);
+		$(".gtotalreturtext").text(addDecimal(total));
 
-    updateRowOrder();
-  }
+		updateRowOrder();
+	}
 </script>
 
 <script type="text/javascript">
-	$(".inventory").change(function () {
-    $.ajax({
-      url: '{!! url("/") !!}' + "/ajax/returnsupplierhistory/" + $(".inventory").val() + "/" + $(".supplier").val(),
-      method: "get",
-      success: function (response) {
-        $('.mytablerow').remove();
+	$(".inventory").change(function() {
+		$.ajax({
+			url: '{!! url("/") !!}' + "/ajax/returnsupplierhistory/" + $(".inventory").val() + "/" + $(".supplier").val(),
+			method: "get",
+			success: function(response) {
+				$('.mytablerow').remove();
 
-        $.each(response, function (i, item) {
+				$.each(response, function(i, item) {
 
-          var table = document.getElementById("history");
-          var row = table.insertRow();
-          row.setAttribute('id', 'row' + count);
-          row.setAttribute('class', 'mytablerow');
+					var table = document.getElementById("history");
+					var row = table.insertRow();
+					row.setAttribute('id', 'row' + count);
+					row.setAttribute('class', 'mytablerow');
 
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          var cell3 = row.insertCell(2);
-          var cell4 = row.insertCell(3);
-		  console.dir(item);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					console.dir(item);
 
-          cell1.innerHTML = formatDate(item['createdOn']);
-          cell2.innerHTML = item['item_name'];
-          cell3.innerHTML = item['qty_get'];
-          cell4.innerHTML = addDecimal(item['price_per_satuan_id']);
-        });
-      },
-      error: function (xhr, statusCode, error) {
-      }
-    })
-  });
-
+					cell1.innerHTML = formatDate(item['createdOn']);
+					cell2.innerHTML = item['item_name'];
+					cell3.innerHTML = item['qty_get'];
+					cell4.innerHTML = addDecimal(item['price_per_satuan_id']);
+				});
+			},
+			error: function(xhr, statusCode, error) {}
+		})
+	});
 </script>
 @endpush

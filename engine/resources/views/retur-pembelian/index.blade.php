@@ -33,13 +33,9 @@ Retur Pembelian
 						<td onclick="detail({{$key->id}},'retur-pembelian')">{{$key->no_invoice}}</td>
 						<td>
 							<div id="menutable">
-								<a href="<?php echo url("/") ?>/customer_return/{{$key->id}}"
-									class="btn btn-xs btn-warning dis" style="width: 100%">Edit</a><br>
-								<button class="btn btn-xs btn-danger dis"
-									onclick="konfirmasi({{$key->id}},'customer_return')"
-									style="width: 100%">Delete</button><br>
-								<button onclick="printfaktur({{$key->id}})" class="btn btn-xs btn-success "
-									style="width: 100%">Print Faktur</button>
+								<a href="<?php echo url("/") ?>/retur-pembelian/{{$key->id}}" class="btn btn-xs btn-warning dis" style="width: 100%">Edit</a><br>
+								<button class="btn btn-xs btn-danger dis" onclick="konfirmasi({{$key->id}},'retur-pembelian')" style="width: 100%">Delete</button><br>
+								<button onclick="printfaktur({{$key->id}})" class="btn btn-xs btn-success " style="width: 100%">Print Faktur</button>
 							</div>
 						</td>
 					</tr>

@@ -154,6 +154,7 @@ class ReturPenjualanController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		$response = $this->delete("customer-return-header/$id");
+		return $response;
 	}
 }

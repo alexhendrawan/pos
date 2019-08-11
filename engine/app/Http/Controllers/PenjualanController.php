@@ -105,42 +105,43 @@ class PenjualanController extends Controller
 		for ($i = 0; $i < $count; $i++) {
 			$j = $i + 1;
 			$a = "data-item-id-" . $j;
-			if($request->has($a)){
-			
-			$b = "data-qty-id-" . $j;
-			$c = "data-harga-" . $j;
-			$d = "data-diskon-id-" . $j;
-			$e = "data-mod-id-" . $j;
-			$f = "data-sub-id-" . $j;
-			$a = $request->$a;
-			$b = $request->$b;
-			$c = $request->$c;
-			$d = $request->$d;
-			$e = $request->$e;
-			$f = $request->$f;
-			$isi["item_stock_id"] = $a;
-			$isi["qty"] = $b;
-			$isi["price_per_satuan_id"] = $c;
-			$isi["sales_per_satuan_id"] = $e * $b;
-			$isi["diskon"] = $d;
-			$isi["qty_pending_send"]= 0;
-			if ($isi["diskon"] == null) {
-				$isi["diskon"] = 0;
+			if ($request->has($a)) {
+
+				$b = "data-qty-id-" . $j;
+				$c = "data-harga-" . $j;
+				$d = "data-diskon-id-" . $j;
+				$e = "data-mod-id-" . $j;
+				$f = "data-sub-id-" . $j;
+				$a = $request->$a;
+				$b = $request->$b;
+				$c = $request->$c;
+				$d = $request->$d;
+				$e = $request->$e;
+				$f = $request->$f;
+				$isi["item_stock_id"] = $a;
+				$isi["qty"] = $b;
+				$isi["price_per_satuan_id"] = $c;
+				$isi["sales_per_satuan_id"] = $e * $b;
+				$isi["diskon"] = $d;
+				$isi["qty_pending_send"] = 0;
+				if ($isi["diskon"] == null) {
+					$isi["diskon"] = 0;
+				}
+				$isi["bonus"] = 0;
+				if ($isi["qty"] == 0) {
+					$isi["bonus"] = 1;
+				}
+				$isi["retur"] = 0;
+				$line['data'][$i] = $isi;
+				if ($c != 0) {
+					$modal += $e * $b;
+				}
+				$shipment = [
+					"qty" => $b,
+					"customer_shipment_header_id" => $shipmentheaderid,
+				];
+				$shipmentline["data"][$i] = $shipment;
 			}
-			$isi["bonus"] = 0;
-			if ($isi["qty"] == 0) {
-				$isi["bonus"] = 1;
-			}
-			$isi["retur"] = 0;
-			$line['data'][$i] = $isi;
-			if ($c != 0) {
-				$modal += $e * $b;
-			}
-			$shipment = [
-				"qty" => $b,
-				"customer_shipment_header_id" => $shipmentheaderid,
-			];
-			$shipmentline["data"][$i] = $shipment;}
 		}
 		$responseline = $this->post("sales-order-line", $line);
 		$responseshipmentline = $this->post("customer-shipment-line", $shipmentline);

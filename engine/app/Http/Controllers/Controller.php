@@ -73,7 +73,7 @@ class Controller extends BaseController
 			dd($e->getResponse()->getBody()->getContents());
 		}
 
-		$result["data"] =  json_decode($response->getBody())->data;
+		$result["data"] =  json_decode($response->getBody());
 		return $result;
 	}
 

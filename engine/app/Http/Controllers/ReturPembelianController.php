@@ -130,6 +130,7 @@ class ReturPembelianController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		$response = $this->delete("supplier-return-header/$id");
+		return $response;
 	}
 }
