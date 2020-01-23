@@ -1,0 +1,3 @@
+@push("js")
+
+@endpush
