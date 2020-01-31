@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\POHeader;
 use App\PurchaseInvoiceHeader;
 use App\PurchaseInvoicePayment;
-use Illuminate\Http\Request;
 
 class HutangController extends Controller
 {
@@ -18,7 +19,7 @@ class HutangController extends Controller
     {
         // $data = $this->get("purchase-invoice-payment");
         // dd($data["data"][0]);
-        return view("hutang.index", $this->get("purchase-invoice-payment"));
+        return view("hutang.index",$this->get("purchase-invoice-payment"));
     }
 
     /**
@@ -28,7 +29,7 @@ class HutangController extends Controller
      */
     public function create()
     {
-        return view("hutang.form", $this->get("purchase-invoice-header"));
+         return view("hutang.form",$this->get("purchase-invoice-header"));
     }
 
     /**
@@ -39,8 +40,8 @@ class HutangController extends Controller
      */
     public function store(Request $request)
     {
-        $response = $this->post("purchase-invoice-payment", $request->all());
-        return redirect()->back()->with("message", "Lunas");
+		$response  = $this->post("purchase-invoice-payment",$request->all());
+		return redirect()->back()->with("message","Lunas");
     }
 
     /**
@@ -51,12 +52,7 @@ class HutangController extends Controller
      */
     public function show($id)
     {
-        $data = PurchaseInvoicePayment::with("purchaseinvoiceheader.poheader.supplier")
-            ->where("purchase_invoice_header_id", $id)
-            ->get();
-
-        return view("pembayaran.hutang", compact("data"));
-
+        //
     }
 
     /**
@@ -92,6 +88,7 @@ class HutangController extends Controller
     {
         //
     }
+
     public function markfordelete()
     {
         $PO = PurchaseInvoiceHeader::with("payment")->get();

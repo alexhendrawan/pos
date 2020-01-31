@@ -24,8 +24,8 @@ class PurchaseInvoiceHeader extends Model implements Auditable
     public function detail()
     {
         return $this->hasMany('App\PurchaseInvoiceLine', 'purchase_invoice_header_id', 'id');
-	}
-	public function payment()
+    }
+    	public function payment()
     {
         return $this->hasMany('App\PurchaseInvoicePayment', 'purchase_invoice_header_id', 'id');
     }

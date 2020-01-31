@@ -1,11 +1,11 @@
 @extends("layouts.main")
 @section("title")
-Penjualan Detail
+Penjualan Detail 
 @endsection
 @section("content")
 <div class="page-content-wrapper">
 	<div class="container-fluid">
-
+	
 		<div class="row">
 			<form action="{{url('/')}}/penjualan-detail/{{$data->id}}" method="post">
 				@csrf
@@ -13,30 +13,25 @@ Penjualan Detail
 				<div class="form-group">
 					Barang:
 					<select id="var3" name="item_stock_id" class="stock form-control" style="width: 100%">
-						<option value="{{$data->stock->id}}">{{$data->stock->inventoryproperty->item->item_name}}
-						</option>
+						<option value="{{$data->stock->id}}">{{$data->stock->inventoryproperty->item->item_name}}</option>
 					</select>
 				</div>
 				<div class="form-group">
 					Harga Satuan:
-					<input autocomplete="off" type="number" name="price_per_satuan_id" id="var10" class="form-control"
-						value="{{$data->price_per_satuan_id}}">
+					<input autocomplete="off" type="number" name="price_per_satuan_id" id="var10" class="form-control" value="{{$data->price_per_satuan_id}}">
 					Harga Modal
-					<input autocomplete="off" type="number" name="purchase_price" readonly id="var20"
-						class="form-control" value="{{$data->stock->purchase_price}}">
+					<input autocomplete="off" type="number" disabled id="var20" class="form-control" value="{{$data->stock->purchase_price}}">
 				</div>
 				<div class="form-group">
 					Diskon (%):
-					<input autocomplete="off" type="number" name="diskon" id="var11" class="form-control"
-						value="{{ $data->diskon }}">
+					<input autocomplete="off" type="number" name="diskon" id="var11" class="form-control" value="{{ $data->diskon }}">
 				</div>
 				<div class="form-group">
 					QTY Buy:
-					<input autocomplete="off" type="text" id="var5" name="qty" value="{{$data->qty}}"
-						class="form-control">
+					<input autocomplete="off" type="text" id="var5" name="qty" value="{{$data->qty}}" class="form-control">
 				</div>
 				<div class="form-group ">
-					<input type="submit" class="form-control btn btn-info dis" value="Edit Barang">
+					<input  type="submit" class="form-control btn btn-info dis" value="Edit Barang">
 				</div>
 			</form>
 		</div>

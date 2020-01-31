@@ -109,6 +109,12 @@ class ItemStockController extends Controller
     public function update(Request $request, $id)
     {
         $data = MD::find($id);
+        StockMutation::create([
+            "notes" => "Edit Item Stock",
+            "qty" => $request->qty,
+            "qty_before" => $data->qty,
+            "item_stock_id" => $id,
+        ]);
         if ($data == null) {
             $response = $this->responseBase([], 404);
             return $response;
@@ -117,6 +123,7 @@ class ItemStockController extends Controller
             $data->$key = $value;
         }
         $data->save();
+
         $response = $this->responseBase($data, 200);
         return $response;
     }
@@ -193,12 +200,17 @@ class ItemStockController extends Controller
 
     public function detailStock($id)
     {
+        $tanggalpatokan = "2020-01-08 00:00:00";
+
         $opname = StockMutation::where("item_stock_id", $id)->orderby("createdOn", "desc")->first();
-        $data["opname"] = StockMutation::where("item_stock_id", $id)->where("createdOn", ">", "2020-01-08 00:00:00")->orderby("createdOn", "desc")->first();
-        $data["penjualan"] = SalesOrderLine::where("item_stock_id", $id)->where("createdOn", ">", "2020-01-08 00:00:00")->orderby("createdOn", "desc")->get();
-        $data["pembelian"] = POLine::with("purchaseline")->where("item_stock_id", $id)->where("createdOn", ">", "2020-01-08 00:00:00")->orderby("createdOn", "desc")->get();
-        $data["returpenjualan"] = CustomerReturnLine::where("item_stock_id", $id)->where("createdOn", ">", "2020-01-08 00:00:00")->orderby("createdOn", "desc")->get();
-        $data["returpembelian"] = SupplierReturnLine::where("item_stock_id", $id)->where("createdOn", ">", "2020-01-08 00:00:00")->orderby("createdOn", "desc")->get();
+        if ($opname != null) {
+            $tanggalpatokan = $opname->createdOn;
+        }
+        $data["opname"] = StockMutation::where("item_stock_id", $id)->orderby("createdOn", "desc")->first();
+        $data["penjualan"] = SalesOrderLine::where("item_stock_id", $id)->where("createdOn", ">", $tanggalpatokan)->orderby("createdOn", "desc")->get();
+        $data["pembelian"] = POLine::with("purchaseline")->where("item_stock_id", $id)->where("createdOn", ">", $tanggalpatokan)->orderby("createdOn", "desc")->get();
+        $data["returpenjualan"] = CustomerReturnLine::where("item_stock_id", $id)->where("createdOn", ">", $tanggalpatokan)->orderby("createdOn", "desc")->get();
+        $data["returpembelian"] = SupplierReturnLine::where("item_stock_id", $id)->where("createdOn", ">", $tanggalpatokan)->orderby("createdOn", "desc")->get();
 
         $response = $this->responseBase($data, 200);
         return $response;

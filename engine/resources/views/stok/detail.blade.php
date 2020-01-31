@@ -65,11 +65,11 @@ $qty = 0;
                     <tr>
                         <td>{{$loop->iteration}}</td>
                         <td>{{$pembelian->createdOn}}</td>
-                        <td>{{$pembelian->qty}}</td>
+                        <td>{{$pembelian->purchaseline->qty}}</td>
                     </tr>
 
                     @php
-                    $qty += $pembelian->qty;
+                    $qty += $pembelian->purchaseline->qty;
                     @endphp
                     @empty
                     <tr>

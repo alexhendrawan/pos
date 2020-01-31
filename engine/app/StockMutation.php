@@ -3,12 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable; 
 use Illuminate\Database\Eloquent\SoftDeletes;
-use OwenIt\Auditing\Contracts\Auditable;
 
 class StockMutation extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;use SoftDeletes;
+	use \OwenIt\Auditing\Auditable; use SoftDeletes;
     public $table = "stock_mutation";
 
     protected $guarded = [];
@@ -16,7 +16,7 @@ class StockMutation extends Model implements Auditable
     const UPDATED_AT = 'updatedOn';
     const DELETED_AT = 'deletedOn';
     //
-    public function stock()
+     public function stock()
     {
         return $this->belongsTo('App\ItemStock', 'item_stock_id', 'id');
     }

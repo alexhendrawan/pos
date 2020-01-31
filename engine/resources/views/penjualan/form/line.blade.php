@@ -1,9 +1,9 @@
 @push("css")
 <style type="text/css">
-.modal-dialog{
-	width: auto !important;
-	max-width: 1000px;
-}
+	.modal-dialog {
+		width: auto !important;
+		max-width: 1000px;
+	}
 </style>
 @endpush
 <div id="profile1" class="tab-pane fade">
@@ -12,13 +12,15 @@
 		<div class="form-group col-lg-6">
 			Total:
 			<input autocomplete="off" type="text" disabled="" value="0" class="gtotal" required="">
-			<input autocomplete="off" type="hidden" value="0" maxlength="19" name="total_sales" class="form-control gtotal" required="">
+			<input autocomplete="off" type="hidden" value="0" maxlength="19" name="total_sales"
+				class="form-control gtotal" required="">
 		</div>
 		<div class="form-group col-lg-6 d-flex">
 			<h4>Hutang: </h4>
 			<h4 id="hutang"></h4>
 			<!-- Button to Open the Modal -->
-			<button type="button" id="btn-riwayat" class="btn btn-sm btn-primary ml-4" data-toggle="modal" data-target="#myModal">Riwayat</button>
+			<button type="button" id="btn-riwayat" class="btn btn-sm btn-primary ml-4" data-toggle="modal"
+				data-target="#myModal">Riwayat</button>
 		</div>
 
 	</div>
@@ -31,7 +33,7 @@
 				</select>
 			</div>
 			<div class="form-group">
-				Harga Satuan:	<a onclick="$('.modalhide').toggle()">&nbsp;&nbsp;&nbsp;&nbsp;</a>
+				Harga Satuan: <a onclick="$('.modalhide').toggle()">&nbsp;&nbsp;&nbsp;&nbsp;</a>
 				<input autocomplete="off" type="number" id="var10" class="form-control">
 				<span class="modalhide">Harga Modal</span>
 				<input autocomplete="off" type="number" disabled id="var20" class="form-control modalhide">
@@ -46,15 +48,16 @@
 				<input autocomplete="off" type="hidden" id="var18" class="form-control">
 			</div>
 			<div class="form-group hide">
-				<input autocomplete="off" type="button" onclick="myFunction()" class="form-control btn btn-info dis" value="Tambah Barang">
+				<input autocomplete="off" type="button" onclick="myFunction()" class="form-control btn btn-info dis"
+					value="Tambah Barang">
 			</div>
 			<input autocomplete="off" type="hidden" id="pur">
 			<input autocomplete="off" type="hidden" id="gtx">
 
 		</div>
-		<div class="col-lg-8"  style="overflow-y: auto; max-height: 500px">
+		<div class="col-lg-8" style="overflow-y: auto; max-height: 500px">
 			<div>
-				<table id="" class="table table-bordered table-stripped" >
+				<table id="" class="table table-bordered table-stripped">
 					<thead>
 						<th>No</th>
 						<th>Kode Barang</th>
@@ -74,7 +77,7 @@
 			<div class="row">
 				<div class="box col-md-12">
 					<div class="col-md-12 col-xs-12">
-						<div class="col-md-12" id="ccc" >
+						<div class="col-md-12" id="ccc">
 							<table id="" class="table table-bordered table-stripped">
 								<thead>
 									<th>Tanggal</th>
@@ -94,7 +97,8 @@
 		</section>
 		<input type="checkbox" name="prints"> Langsung Print?
 
-		<input autocomplete="off" type="submit" class="form-control btn btn-success" value="Create" style="width:100%;">
+		<input autocomplete="off" type="submit" id="cekcek" class="form-control btn btn-success" value="Create"
+			style="width:100%;">
 	</div>
 </div>
 
@@ -113,28 +117,31 @@
 			<div class="modal-body">
 				<table class="table table-bordered table-hover box">
 					<thead class="replicate">
-						<th class="col-head" >
+						<th class="col-head">
 							No
 
 						</th>
-						<th class="col-head" >
+						<th class="col-head">
 							No Sales
 						</th>
 
-						<th class="col-head" >
+						<th class="col-head">
 							Tanggal Order
 						</th>
-						<th class="col-head" >
-							Total Faktur <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Sudah dikurangi Retur dan Diskon"></i>
+						<th class="col-head">
+							Total Faktur <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top"
+								title="Sudah dikurangi Retur dan Diskon"></i>
 						</th>
-						<th class="col-head" >
-							Total Bayar <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Total Yang sudah dibayarkan"></i>
+						<th class="col-head">
+							Total Bayar <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top"
+								title="Total Yang sudah dibayarkan"></i>
 						</th>
-						<th class="col-head" >
+						<th class="col-head">
 							Retur
 						</th>
-						<th class="col-head" >
-							Sisa Bayar <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top" title="Sudah dikurangi Retur dan Diskon"></i>
+						<th class="col-head">
+							Sisa Bayar <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="top"
+								title="Sudah dikurangi Retur dan Diskon"></i>
 						</th>
 					</thead>
 
@@ -155,7 +162,6 @@
 
 @push("js")
 <script>
-	
 	$('.stock').select2({
 		selectOnClose: true,
 		placeholder: 'Pilih stok',
@@ -178,6 +184,9 @@
 	});
 
 	$(".stock").change(function () {
+		flagrow = 0;
+		$("#cekcek").show();
+
 		// $(".stock").select2('data', null)
 		// $('.stock').html('').select2({data: [{id: '', text: ''}]});
 		$.ajax({
@@ -190,6 +199,8 @@
 				$("#buyprice").val(response["purchase_price"]);
 				if(response["qty"] <= 0){
 					swal("Jumlah Stock 0. Harap melakukan pembelian terlebih dahulu");
+					$("#cekcek").hide();
+					flagrow = count;
 				}else{
 				}
 			},

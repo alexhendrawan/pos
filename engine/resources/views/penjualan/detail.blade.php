@@ -90,10 +90,6 @@ Penjualan Detail
 					<th class="col-head">
 						Total Harga
 					</th>
-
-					<th class="col-head">
-						Total Modal
-					</th>
 					<th>
 						Action
 					</th>
@@ -108,7 +104,6 @@ Penjualan Detail
 						<td class="">{{$key->qty}}</td>
 						<td class="printUang">{{$key->price_per_satuan_id}}</td>
 						<td class="printUang">{{$key->qty * $key->price_per_satuan_id}}</td>
-						<td class="printUang">{{$key->qty * $key->stock->purchase_price}}</td>
 						<td>
 							<div id="menutable">
 								<a href="<?php echo url("/") ?>/penjualan-detail/{{$key->id}}/edit"

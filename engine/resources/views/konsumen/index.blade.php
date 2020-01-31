@@ -25,7 +25,7 @@
                 <td>{{$key->name}}</td>
                 <td>{{$key->customer_address}}</td>
                 <td>{{$key->city->city_name}}</td>
-                <td>{{$key->sales->displayName}}</td>
+                <td>{{$key->sales->displayName ?? "-"}}</td>
                 <td>{{$key->customer_phone_no}}</td>
                 <!-- <td>{{$key->loanday}}</td> -->
                 <td class="printUang">{{$key->creditlimit}}</td>

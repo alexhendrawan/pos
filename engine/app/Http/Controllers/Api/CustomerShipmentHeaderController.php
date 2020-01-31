@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\CustomerShipmentHeader as MD;
 use App\SalesOrderHeader;
 use App\SalesOrderLine;
-use DB;
+use Illuminate\Http\Request;
 
 class CustomerShipmentHeaderController extends Controller
 {
@@ -153,15 +152,14 @@ class CustomerShipmentHeaderController extends Controller
         return $response;
     }
 
-   
-   
-     public function updateModal(){
+    public function updateModal()
+    {
         echo date("Y-m-d H:i:s");
-        $date_start = "2019-11-01 00:00:00";
-        $date_end = "2019-11-30 23:59:59";
-        $data = SalesOrderHeader::with("detail")->wherebetween("createdOn",[$date_start, $date_end])->get();
-         // $data = SalesOrderHeader::with("detail.stock")->where("id","=","21522")->get();
-        foreach ($data as $key) {  
+        $date_start = "2020-01-01 00:00:00";
+        $date_end = "2020-01-31 23:59:59";
+        $data = SalesOrderHeader::with("detail")->wherebetween("createdOn", [$date_start, $date_end])->get();
+        // $data = SalesOrderHeader::with("detail.stock")->where("id","=","21522")->get();
+        foreach ($data as $key) {
             $total = 0;
             foreach ($key->detail as $lines) {
                 if ($lines->price_per_satuan_id != 0) {
@@ -181,7 +179,7 @@ class CustomerShipmentHeaderController extends Controller
                 $key->modal = $total;
                 $key->save();
             }
-            echo "done for header id " . $key->intnomorsales."|||".$key->createdOn . "<br>";
+            echo "done for header id " . $key->intnomorsales . "|||" . $key->createdOn . "<br>";
 
         }
         echo "all done..";

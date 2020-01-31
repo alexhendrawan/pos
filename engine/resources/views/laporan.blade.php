@@ -31,6 +31,7 @@ Laporan
 						<option value="rpembelian">Retur Pembelian </option>
 						<option value="rpenjualan">Retur Penjualan </option>
 						<option value="opname">Stock Opname</option>
+
 						{{-- <option value="labarugi">Laba Rugi</option>
 						<option value="kas">Kas</option>
 						<option value="neraca">Neraca</option> --}}
@@ -81,14 +82,12 @@ Laporan
 				<div id="barang" class="paramhide" style="display: none">
 					<div class="form-group">
 						Kategori:
-						<select autocomplete="off" class="resetparam category form-control" name="kategori"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam category form-control" name="kategori" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
 						Merk:
-						<select autocomplete="off" class="resetparam brands form-control" name="merk"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam brands form-control" name="merk" style="width: 100%"></select>
 					</div>
 					<div class="form-group">
 						Tampilkan harga:
@@ -101,32 +100,27 @@ Laporan
 
 					<div class="form-group">
 						Kategori:
-						<select autocomplete="off" class="resetparam category form-control" name="kategori"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam category form-control" name="kategori" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
 						Merk:
-						<select autocomplete="off" class="resetparam brands form-control" name="merk"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam brands form-control" name="merk" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
 						Supplier:
-						<select autocomplete="off" class="resetparam supplier form-control" name="supplier"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam supplier form-control" name="supplier" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
 						Konsumen:
-						<select autocomplete="off" class="resetparam customer form-control" name="customer"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam customer form-control" name="customer" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
 						Gudang:
-						<select autocomplete="off" class="resetparam warehouse form-control" name="warehouse_id"
-							style="width: 100%"></select>
+						<select autocomplete="off" class="resetparam warehouse form-control" name="warehouse_id" style="width: 100%"></select>
 					</div>
 
 					<div class="form-group">
@@ -232,20 +226,17 @@ Laporan
 						Pegawai:
 						<select class="resetparam userall form-control" name="pegawai" style="width: 100%"></select>
 						Inventaris:
-						<select class="resetparam form-control inventaris" name="inventaris"
-							style="width: 100%"></select>
+						<select class="resetparam form-control inventaris" name="inventaris" style="width: 100%"></select>
 						Kategori Pengeluaran:
 						@if(Auth::User()->id == 69 ||Auth::User()->id == 70
 						||Auth::User()->id == 48||Auth::User()->id
 						==
 						36||Auth::User()->id == 18)
 						Kategori
-						<select class="form-control katpengadmin resetparam" name="kategori_pengeluaran_id"
-							style="width: 100%"></select>
+						<select class="form-control katpengadmin resetparam" name="kategori_pengeluaran_id" style="width: 100%"></select>
 						@else
 						Kategori
-						<select class="form-control katpeng resetparam" name="kategori_pengeluaran_id"
-							style="width: 100%"></select>
+						<select class="form-control katpeng resetparam" name="kategori_pengeluaran_id" style="width: 100%"></select>
 						@endif
 					</div>
 

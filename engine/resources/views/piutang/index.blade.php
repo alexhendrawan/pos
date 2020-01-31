@@ -17,51 +17,50 @@ Piutang
 					<label for="key">
 						Search By
 						<select name="key" class="form-control w-100" id="key">
-							<option value="customer.name">Customer</option>
-							<option value="sales_order_header.intnomorsales">Nomor Faktur</option>
+							<option  value="customer.name">Customer</option>
+							<option  value="sales_order_header.intnomorsales">Nomor Faktur</option>
 						</select>
 					</label>
 					<label for="search">
 						Query
-						<input type="text" autocomplete="off" class="form-control" name="search" id="search"
-							value="{{ app('request')->input('search') ?? "" }}">
+						<input type="text" autocomplete="off" class="form-control" name="search" id="search" value="{{ app('request')->input('search') ?? "" }}">
 					</label>
 					<input type="submit" name="" value="Submit!">
 				</form>
 			</div>
 			<table id="tabel" class="table table-bordered table-hover box">
 				<thead>
-					<th class="col-head">
+					<th class="col-head" >
 						No
 
 					</th>
 
-					<th class="col-head">
+					<th class="col-head" >
 						No Faktur Sales
 
 					</th>
-					<th class="col-head">
+					<th class="col-head" >
 						Tanggal Pembayaran
 
 					</th>
-					<th class="col-head">
+					<th class="col-head" >
 						Customer
 
 					</th>
-					<th class="col-head">
+					<th class="col-head" >
 						Status
 
 					</th>
-					<th class="col-head">
+					<th class="col-head" >
 						Jumlah Pembayaran
 
 					</th>
 
-					<th class="col-head">
+					<th class="col-head" >
 						Notes
 					</th>
 
-					<th class="col-head">
+					<th class="col-head" >
 						Payment
 					</th>
 					<th>
@@ -69,16 +68,12 @@ Piutang
 					</th>
 
 				</thead>
-				<tbody id="item-table">
+				<tbody id="item-table"> 
 					@foreach($data->content as $key)<tr>
 						<td class="">{{ $loop->iteration }}</td>
-						<td><a class="btn btn-info"
-								href="{{ url("penjualan")."/".$key->sales->id }}">{{$key->sales->intnomorsales ?? null}}</a>
-						</td>
+						<td><a class="btn btn-info" href="{{ url("penjualan")."/".$key->sales->id }}">{{$key->sales->intnomorsales ?? null}}</a></td>
 						<td>{{date("d-m-Y",strtotime($key->createdOn))}}</td>
-						<td><a class="btn btn-info"
-								href="{{ url("konsumen")."/".$key->sales->customer->id }}">{{$key->sales->customer->name ?? null}}</a>
-						</td>
+						<td><a class="btn btn-info" href="{{ url("konsumen")."/".$key->sales->customer->id }}">{{$key->sales->customer->name ?? null}}</a></td>
 						<td>{{$key->sales_invoice_payment_status ?? null}}</td>
 						<td>Rp. {{number_format($key->payment_value)}}</td>
 						<td>{{$key->note ?? null}}</td>
@@ -95,10 +90,8 @@ Piutang
 						</td>
 						<td>
 							<div id="menutable">
-								<a href="<?php echo url("/") ?>/piutang/{{$key->id}}/edit"
-									class="btn btn-xs btn-warning dis" style="width: 100%">Edit</a><br>
-								<button class="btn btn-xs btn-danger dis" onclick="konfirmasi({{$key->id}},'piutang')"
-									style="width:100%">Delete</button>
+								<a href="<?php echo url("/") ?>/piutang/{{$key->id}}"  class="btn btn-xs btn-warning dis" style="width: 100%">Edit</a><br>
+								<button  class="btn btn-xs btn-danger dis"  onclick="konfirmasi({{$key->id}},'piutang')" style="width:100%">Delete</button>
 							</div>
 						</td>
 					</tr>
@@ -110,3 +103,5 @@ Piutang
 	</div>
 </div>
 @endsection
+
+

@@ -50,19 +50,12 @@
                 <td>{{date("d-m-Y",strtotime($key->tgl))}}</td>
                 <td>{{$key->supplier_invoice_no}} | {{$key->internal_invoice_no}} </td>
                 <td>{{$key->supplier_name}}</td>
-                <td class="printAngka">{{$key->invoice_total + $key->retur}}</td>
+                <td class="printAngka">{{$key->invoice_total - $key->retur}}</td>
                 <td class="printAngka">{{$key->retur}}</td>
-                @if($key->retur == 0)
                 <td class="printAngka">{{$key->invoice_total}}</td>
-                @else
-                <td class="printAngka">{{$key->invoice_total + $key->retur}}</td>
-                @endif
+
                 <td class="printAngka">{{$key->po_total_paid}}</td>
-                @if($key->retur == 0)
-                <td class="printAngka">{{$key->invoice_total - $key->po_total_paid }}</td>
-                @else
-                <td class="printAngka">{{($key->invoice_total+ + $key->retur) - $key->po_total_paid}}</td>
-                @endif
+                <td class="printAngka">{{$key->invoice_total - $key->po_total_paid}}</td>
                 @php
                 $a += $key->invoice_total - $key->retur;
                 $b += $key->retur;

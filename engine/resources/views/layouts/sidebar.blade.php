@@ -12,7 +12,7 @@
 				<a href="{{ url("/") }}" class="detailed">
 					<span>Dashboard</span>
 				</a>
-				<span class="bg-success icon-thumbnail"><i class="fas fa-home"></i></span>
+				<span class="bg-success icon-thumbnail"><i class="pg-home"></i></span>
 			</li>
 
 			<li class="">
@@ -162,13 +162,12 @@
 					</li>
 				</ul>
 			</li>
-			<li>
+<li>
 				<a href="{{url("stock_opname")}}"><span class="title">Stock Opname</span>
-					<span class=" arrow"></span></a>
-				<span class="icon-thumbnail"><i class="pg-calender"></i></span>
+				</a>
+				<span class="icon-thumbnail"></span>
 
 			</li>
-
 			<li class="">
 				<a href="#"><span class="title">Master</span></a>
 			</li>

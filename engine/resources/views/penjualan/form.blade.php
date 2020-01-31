@@ -8,8 +8,10 @@ Penjualan
 	<div class="row">
 		<div class="col-md-12">
 			<ul id="tabsJustified" class="nav nav-tabs">
-				<li class="nav-item"><a href="" data-target="#home1" data-toggle="tab" class="nav-link small text-uppercase active">Data Customer</a></li>
-				<li class="nav-item"><a href="" data-target="#profile1" data-toggle="tab" class="nav-link small text-uppercase " id="showmodal">Barang</a></li>
+				<li class="nav-item"><a href="" data-target="#home1" data-toggle="tab"
+						class="nav-link small text-uppercase active">Data Customer</a></li>
+				<li class="nav-item"><a href="" data-target="#profile1" data-toggle="tab"
+						class="nav-link small text-uppercase " id="showmodal">Barang</a></li>
 			</ul>
 			<br>
 			<form action="{{url('/')}}/penjualan" method="post">
@@ -39,8 +41,10 @@ Penjualan
 <script type="text/javascript">
 	var count = 1;
 	var realcount = 0;
+	var flagrow = 0;
 	$(window).keydown(function (event) {
 		if (event.keyCode == 13) {
+			if(flagrow != count){
 
 			if (realcount < 16 && $("#var5").val() != 0) {
 				var table = document.getElementById("myTable");
@@ -131,6 +135,9 @@ Penjualan
 				swal("kuantitas harus di isi");
 			}
 			$(".stock").select2("open");
+		}else{
+			swal("Barang Minus, Harap diperbaiki terlebih dahulu");
+		}
 		}
 	});
 </script>

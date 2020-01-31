@@ -16,7 +16,7 @@ class UpdateController extends Controller
         foreach ($response->content as $key) {
             $salesheader_id = $key->sales->id;
             $salesheadercreated = $key->sales->createdOn;
-            if($salesheadercreated >= "2019-09-05"){
+            if($salesheadercreated >= "2020-01-01 00:00:00"){
             $response2 = $this->getData("sales-order-header/" . $salesheader_id);
             $total = 0;
                 foreach ($response2->detail as $lines) {

@@ -46,6 +46,7 @@ class StockOpnameController extends Controller
                 $dataStock = ItemStock::find($itemID);
 
                 $mutation = StockMutation::create([
+                    "qty_before" => $dataStock->qty,
                     "item_stock_id" => $itemID,
                     "qty" => $qty,
                     "notes" => "Proses - StockOpname",

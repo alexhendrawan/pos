@@ -39,12 +39,14 @@
 
 
             @foreach($data as $key)
-
+<tr>
             <td class="">{{$loop->iteration}}</td>
             <td>{{date("d-m-Y",strtotime($key->createdOn))}}</td>
             <td>{{$key->stock->inventoryproperty->item->item_name}}</td>
             <td>{{$key->qty_before}}</td>
             <td class="printAngka">{{$key->qty}}</td>
+        </tr>
+            @endforeach
         </tbody>
     </table>
 </section><!-- /.content -->

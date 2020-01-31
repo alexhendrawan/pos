@@ -55,7 +55,8 @@ Retur Pembelian
 							<input autocomplete="off" type="hidden" disabled="" name="" class="gtotalretur">
 						</div>
 						<div class="form-group col-md-12">
-							<input autocomplete="off" type="submit" class="form-control btn btn-info dis" value="Create">
+							<input autocomplete="off" type="submit" class="form-control btn btn-info dis"
+								value="Create">
 						</div>
 					</div>
 
@@ -229,80 +230,95 @@ Retur Pembelian
 	})
 
 
+	flagrow = 0;
+
+$(".stocks").change(function () {
+    flagrow = 0;
+    $.ajax({
+        url: "{!! url('/') !!}" + '/ajax/po_line/' + $(".stocks").val() + '/inventoryproperty',
+        method: "get",
+        success: function (response) {
+            $("#hargaretur").val(response.price_per_satuan_id);
+    
+        },
+        error: function (xhr, statusCode, error) { }
+    });
+});
+
+var count = 1;
+var total = 0;
+$(window).keydown(function (event) {
+    if (event.keyCode == 13) {
+        $.ajax({
+            url: "{!! url('/') !!}" + "/ajax/itemstock/" + $(".stocks").val(),
+            method: "get",
+            success: function (data) {
+                if (data["qty"] <= 0) {
+                    swal("Barang Minus, Harap diperbaiki terlebih dahulu");
+                    
+                }else{
+					var harga = 0;
+
+                    var table = document.getElementById("myTable");
+                    var row = table.insertRow();
+                    row.setAttribute('id', 'row' + count);
+
+                    var cell0 = row.insertCell(0);
+                    cell0.setAttribute('class', 'number');
+                    var cell1 = row.insertCell(1);
+                    var cell2 = row.insertCell(2);
+                    var cell3 = row.insertCell(3);
+                    var cell4 = row.insertCell(4);
+                    var id = $(".stocks").val();
+
+                    cell1.innerHTML = $(".stocks option:selected").text();
+                    cell2.innerHTML = $("#var4").val();
+                    cell3.innerHTML = $("#hargaretur").val();
+                    cell4.innerHTML = '<button type="button" onclick="voidbarang(' + count + ')">Void</button>'
+                    harga = $("#hargaretur").val();
+
+                    var container = document.getElementById("databarang");
+
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "data-item-id-" + count;
+                    input.setAttribute('value', $(".stocks").val());
+                    input.setAttribute('id', "data-item-id-" + count);
+                    container.appendChild(input);
+
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "data-qty-id-" + count;
+                    input.setAttribute('value', $("#var4").val());
+                    input.setAttribute('id', "data-qty-id-" + count);
+                    container.appendChild(input);
+
+                    var input = document.createElement("input");
+                    input.type = "hidden";
+                    input.name = "data-harga-id-" + count;
+                    input.setAttribute('value', harga);
+                    input.setAttribute('id', "data-harga-id-" + count);
+                    container.appendChild(input);
 
 
-	$(".stocks").change(function() {
-		$.ajax({
-			url: "{!! url('/') !!}" + '/ajax/po_line/' + $(".stocks").val() + '/inventoryproperty',
-			method: "get",
-			success: function(response) {
-				$("#hargaretur").val(response.price_per_satuan_id);
-			},
-			error: function(xhr, statusCode, error) {}
-		});
-	});
 
-	var count = 1;
-	var total = 0;
-	$(window).keydown(function(event) {
-		if (event.keyCode == 13) {
-			var harga = 0;
+                    $(".count").val(count);
+                    count++;
+                    var objDiv = document.getElementById("bbb");
+                    objDiv.scrollTop = objDiv.scrollHeight;
+                    updateRowOrder();
+                    total += $("#var4").val() * harga;
+                    $(".gtotalretur").val(total);
 
-			var table = document.getElementById("myTable");
-			var row = table.insertRow();
-			row.setAttribute('id', 'row' + count);
-
-			var cell0 = row.insertCell(0);
-			cell0.setAttribute('class', 'number');
-			var cell1 = row.insertCell(1);
-			var cell2 = row.insertCell(2);
-			var cell3 = row.insertCell(3);
-			var cell4 = row.insertCell(4);
-			var id = $(".stocks").val();
-
-			cell1.innerHTML = $(".stocks option:selected").text();
-			cell2.innerHTML = $("#var4").val();
-			cell3.innerHTML = $("#hargaretur").val();
-			cell4.innerHTML = '<button type="button" onclick="voidbarang(' + count + ')">Void</button>'
-			harga = $("#hargaretur").val();
-
-			var container = document.getElementById("databarang");
-
-			var input = document.createElement("input");
-			input.type = "hidden";
-			input.name = "data-item-id-" + count;
-			input.setAttribute('value', $(".stocks").val());
-			input.setAttribute('id', "data-item-id-" + count);
-			container.appendChild(input);
-
-			var input = document.createElement("input");
-			input.type = "hidden";
-			input.name = "data-qty-id-" + count;
-			input.setAttribute('value', $("#var4").val());
-			input.setAttribute('id', "data-qty-id-" + count);
-			container.appendChild(input);
-
-			var input = document.createElement("input");
-			input.type = "hidden";
-			input.name = "data-harga-id-" + count;
-			input.setAttribute('value', harga);
-			input.setAttribute('id', "data-harga-id-" + count);
-			container.appendChild(input);
-
-
-
-			$(".count").val(count);
-			count++;
-			var objDiv = document.getElementById("bbb");
-			objDiv.scrollTop = objDiv.scrollHeight;
-			updateRowOrder();
-			total += $("#var4").val() * harga;
-			$(".gtotalretur").val(total);
-
-			$(".gtotalreturtext").text(addDecimal(total));
-			updateRowOrder();
-		}
-	});
+                    $(".gtotalreturtext").text(addDecimal(total));
+                    updateRowOrder();
+				}
+            },
+            error: function (xhr, statusCode, error) {
+            }
+        });
+    }
+});
 </script>
 
 <script type="text/javascript">

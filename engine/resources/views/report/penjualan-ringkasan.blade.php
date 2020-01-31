@@ -106,33 +106,28 @@
 			}
 			}
 			@endphp
-			@if(($key->total_sales - $key->modal) / ($key->total_sales + $key->diskon + $key->retur) *100 <=0 && $key->
-				retur == 0) <tr onclick="()">
-					<td class="">{{$loop->iteration}}</td>
-					<td>{{date("d-m-Y",strtotime($key->createdOn))}}</td>
-					<td>{{$key->intnomorsales}}</td>
-					<td>{{$key->customer->name ?? $key->name}}</td>
-					<td class="printAngka">{{$key->total_sales + $key->diskon + $key->retur}}</td>
-					<td class="printAngka">{{$key->diskon}}</td>
-					<td class="printAngka">{{$key->retur}}</td>
-					<td class="printAngka">{{$key->total_sales}}</td>
-					<td class="printAngka">{{$key->total_paid}}</td>
-					<td class="printAngka">{{$key->payment_remain}}</td>
-					@if($lihatkomisi =="On")
-					<td class="printAngka">{{$komisiiterate}}</td>
-					@endif
-					<td class="printAngka">{{$key->modal}}</td>
-					<td class="printAngka">{{$key->total_sales - $key->modal}}</td>
-					<td class="">
-						{{($key->total_sales - $key->modal) / ($key->total_sales + $key->diskon + $key->retur) *100}}
-					</td>
-				</tr>
+			<tr onclick="()">
+				<td class="">{{$loop->iteration}}</td>
+				<td>{{date("d-m-Y",strtotime($key->createdOn))}}</td>
+				<td>{{$key->intnomorsales}}</td>
+				<td>{{$key->customer->name ?? $key->name}}</td>
+				<td class="printAngka">{{$key->total_sales + $key->diskon + $key->retur}}</td>
+				<td class="printAngka">{{$key->diskon}}</td>
+				<td class="printAngka">{{$key->retur}}</td>
+				<td class="printAngka">{{$key->total_sales}}</td>
+				<td class="printAngka">{{$key->total_paid}}</td>
+				<td class="printAngka">{{$key->payment_remain}}</td>
+				@if($lihatkomisi =="On")
+				<td class="printAngka">{{$komisiiterate}}</td>
 				@endif
-				<!-- <tr>
+				<td class="printAngka">{{$key->modal}}</td>
+				<td class="printAngka">{{$key->total_sales - $key->modal}}</td>
+			</tr>
+			<!-- <tr>
 				<th></th>
 				<th colspan="11" style="text-align:center;">Detail Penjualan</th>
 			</tr> -->
-				{{-- <tr>
+			{{-- <tr>
 				<th></th>
 				<th>No</th>
 				<th colspan="3">Item</th>
@@ -150,63 +145,63 @@
 				<td>{{$detail->qty}}</td>
 				<td colspan="2">{{$detail->price_per_satuan_id}}</td>
 				<td colspan="2">{{$detail->qty * $detail->price_per_satuan_id}}</td>
-				</tr>
-				@endforeach --}}
-				@endforeach
+			</tr>
+			@endforeach --}}
+			@endforeach
 
-				<tr onclick="()">
-					<td class=""></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td>
-						Total Sales
-					</td>
-					<td>
-						Total Diskon
-					</td>
-					<td class="col-head">
-						Total Retur
-					</td>
-					<td class="col-head">
-						Total Netto
-					</td>
-					<td class="col-head">
-						Total Bayar
-					</td>
-					<td class="col-head">
-						Sisa Bayar
-					</td>
-					@if($lihatkomisi =="On")
-					<td class="col-head">
-						Total Komisi
-					</td>
-					@endif
+			<tr onclick="()">
+				<td class=""></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>
+					Total Sales
+				</td>
+				<td>
+					Total Diskon
+				</td>
+				<td class="col-head">
+					Total Retur
+				</td>
+				<td class="col-head">
+					Total Netto
+				</td>
+				<td class="col-head">
+					Total Bayar
+				</td>
+				<td class="col-head">
+					Sisa Bayar
+				</td>
+				@if($lihatkomisi =="On")
+				<td class="col-head">
+					Total Komisi
+				</td>
+				@endif
 
-					<td class="col-head">
-						Total Modal
-					</td>
-					<td class="col-head">
-						Total Laba
-					</td>
-				</tr>
-				<tr onclick="()">
-					<td class=""></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td class="printAngka" style="width: auto">{{$sales + $diskon + $retur}}</td>
-					<td class="printAngka">{{$diskon}}</td>
-					<td class="printAngka">{{$retur}}</td>
-					<td class="printAngka">{{$sales}}</td>
-					<td class="printAngka">{{$paid}}</td>
-					<td class="printAngka">{{$remain}}</td>
-					@if($lihatkomisi =="On")
-					<td class="printAngka">{{$komisi}}</td>
-					@endif
-					<td class="printAngka">{{$modal}}</td>
-					<td class="printAngka">{{$omzet}}</td>
-				</tr>
+				<td class="col-head">
+					Total Modal
+				</td>
+				<td class="col-head">
+					Total Laba
+				</td>
+			</tr>
+			<tr onclick="()">
+				<td class=""></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td class="printAngka" style="width: auto">{{$sales + $diskon + $retur}}</td>
+				<td class="printAngka">{{$diskon}}</td>
+				<td class="printAngka">{{$retur}}</td>
+				<td class="printAngka">{{$sales}}</td>
+				<td class="printAngka">{{$paid}}</td>
+				<td class="printAngka">{{$remain}}</td>
+				@if($lihatkomisi =="On")
+				<td class="printAngka">{{$komisi}}</td>
+				@endif
+				<td class="printAngka">{{$modal}}</td>
+				<td class="printAngka">{{$omzet}}</td>
+			</tr>
 		</tbody>
 	</table>
 </section><!-- /.content -->

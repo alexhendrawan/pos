@@ -20,11 +20,13 @@ use App\SupplierReturnHeader;
 use App\User;
 use App\Warehouse;
 use App\StockMutation;
+
 use PDF;
 use DB;
 
 class LaporanController extends Controller
 {
+
 
 	public function getlaporanstockopname(Request $request){
 		if ($request->date_start == null) {
@@ -35,10 +37,10 @@ class LaporanController extends Controller
 		}
 		$query = StockMutation::with("stock.inventoryproperty.item")->wherebetween("createdOn",[$request->date_start." 00:00:00", $request->date_end." 23:59:59"]);
 		if($request->has("item_stock")){
-			$query = $query-where("item_stock_id", $request->item_stock);
+			$query = $query->where("item_stock_id", $request->item_stock);
 		}
 		$query = $query->get();
-		dd($query);
+		return view('report.stockopname', ["data" => $query, "start" => $request->date_start, "end" => $request->date_end]);
 	}
 
 	public function getlaporanbarang(Request $request)
@@ -548,18 +550,23 @@ class LaporanController extends Controller
 		if ($request->date_end == null) {
 			$request->date_end = date("Y-m-d");
 		}
+
+		$filter ="";
+
 		$request->date_end = date("Y-m-d", strtotime($request->date_end . "+1 days"));
 
 		if ($request->has("customer")) {
-			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "paymentremain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
+			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "payment_remain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
 				->join('customer', 'customer.id', '=', 'sales_order_header.customer_id')
 				->whereBetween('sales_order_header.createdOn', [$request->date_start, $request->date_end])
 				->where('customer.id', '=', $request->customer);
 
 			if ($request->has("lunas")) {
-				$data = $data->where("payment_remain", "=", 0);
+				$data = $data->havingRaw('SUM(payment_remain) = ?', [0]);
+				$filter = "Lunas";
 			} else if ($request->has("belumlunas")) {
-				$data = $data->where("payment_remain", ">", 0);
+				$data = $data->havingRaw('SUM(payment_remain) > ?', [0]);
+				$filter = "Belum Lunas";
 			}
 			$data = $data->groupBy('customer.name')
 				->orderby("sales_order_header.createdOn", "asc")
@@ -571,18 +578,22 @@ class LaporanController extends Controller
 				"data" => $data,
 				"tanggalstart" => $request->date_start,
 				"tanggalend" => $request->date_end,
+				"filter" => $filter
+
 			]);
 		} else if ($request->has("sales")) {
-			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "paymentremain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
+			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "payment_remain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
 				->join('customer', 'customer.id', '=', 'sales_order_header.customer_id')
 				->join('user', 'user.id', '=', 'customer.sales_id')
 				->whereBetween('sales_order_header.createdOn', [$request->date_start, $request->date_end])
 				->where('customer.sales_id', '=', $request->sales);
 
-			if ($request->has("lunas")) {
-				$data = $data->where("payment_remain", "=", 0);
+				if ($request->has("lunas")) {
+				$data = $data->havingRaw('SUM(payment_remain) = ?', [0]);
+				$filter = "Lunas";
 			} else if ($request->has("belumlunas")) {
-				$data = $data->where("payment_remain", ">", 0);
+				$data = $data->havingRaw('SUM(payment_remain) > ?', [0]);
+				$filter = "Belum Lunas";
 			}
 			$data = $data->groupBy('customer.name')
 				->orderby("sales_order_header.createdOn", "asc")
@@ -591,19 +602,28 @@ class LaporanController extends Controller
 			$user = User::where("id", "=", $request->sales)->first();
 
 			$name = "Laporan/Piutang/Laporan Piutang per-" . Date("YmdHis") . ".pdf";
-
 			return view('report.piutang', [
 				"data" => $data,
 				"user" => $user,
 				"tanggalstart" => $request->date_start,
 				"tanggalend" => $request->date_end,
+				"filter" => $filter
+
 			]);
 		} else {
 
-			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "paymentremain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
+			$data = SalesOrderHeader::select(DB::raw('`customer`.`name`,SUM(`total_sales`) as "totalsales", SUM(`payment_remain`) as "payment_remain",SUM(`total_paid`) as "totalpaid",sum(`retur`) as "retur",sum(`diskon`) as "diskon"'))
 				->join('customer', 'customer.id', '=', 'sales_order_header.customer_id')
-				->whereBetween('sales_order_header.createdOn', [$request->date_start, $request->date_end])
-				->groupBy('customer.name')
+				->whereBetween('sales_order_header.createdOn', [$request->date_start, $request->date_end]);
+				if ($request->has("lunas")) {
+				$data = $data->havingRaw('SUM(payment_remain) = ?', [0]);
+				$filter = "Lunas";
+			} else if ($request->has("belumlunas")) {
+				$data = $data->havingRaw('SUM(payment_remain) > ?', [0]);
+				$filter = "Belum Lunas";
+			}
+
+				$data = $data->groupBy('customer.name')
 				->orderby("sales_order_header.createdOn", "asc")
 				->get();
 
@@ -613,6 +633,7 @@ class LaporanController extends Controller
 				"data" => $data,
 				"tanggalstart" => $request->date_start,
 				"tanggalend" => $request->date_end,
+				"filter" => $filter
 			]);
 		}
 		return redirect()->back();
@@ -649,6 +670,7 @@ class LaporanController extends Controller
 		]);
 	}
 
+	
 	public function getlaporanhutang(Request $request)
 	{
 		if ($request->date_start == null) {

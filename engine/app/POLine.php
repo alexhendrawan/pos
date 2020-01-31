@@ -17,15 +17,16 @@ class POLine extends Model implements Auditable
     const DELETED_AT = 'deletedOn';
     //
 
+    public function purchaseline()
+    {
+        return $this->belongsTo('App\PurchaseInvoiceLine', 'id', 'po_line_id');
+    }
+
     public function inventoryproperty()
     {
         return $this->belongsTo('App\InventoryProperty', 'inventory_property_id', 'id');
     }
 
-    public function purchaseline()
-    {
-        return $this->belongsTo('App\PurchaseInvoiceLine', 'id', 'po_line_id');
-    }
     public function stock()
     {
         return $this->belongsTo('App\ItemStock', 'item_stock_id', 'id');

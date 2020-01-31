@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\SalesInvoicePayment;
-use App\SalesOrderHeader;
 use Illuminate\Http\Request;
+use function GuzzleHttp\json_encode;
 
 class PiutangController extends Controller
 {
@@ -17,13 +16,13 @@ class PiutangController extends Controller
     {
         if ($request->date_start == null) {
             $request->date_start = $myDate = date("Y-m-d", strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . "-1 month"));
-
+            ;
         }
         if ($request->date_end == null) {
             $request->date_end = date("Y-m-d");
         }
-        $response = $this->client()->get("sales-invoice-payment/" . "?date_start=" . $request->date_start . "&date_end=" . $request->date_end);
-        $data["data"] = json_decode($response->getBody())->data;
+        $response = $this->client()->get("sales-invoice-payment/"."?date_start=".$request->date_start."&date_end=".$request->date_end);
+        $data["data"] =  json_decode($response->getBody())->data;
         return view("piutang.index", $data);
     }
 
@@ -45,23 +44,23 @@ class PiutangController extends Controller
      */
     public function store(Request $request)
     {
-        $body = [
+        $body=[
             "payment_id" => "C",
             "payment_value" => $request->nilaibayar,
-            "sales_order_header_id" => $request->sales,
-            "sales_invoice_payment_id" => 0,
-            "sales_invoice_payment_no" => 0,
+			"sales_order_header_id" => $request->sales,
+			"sales_invoice_payment_id" => 0,
+			"sales_invoice_payment_no" => 0,
             "bank_cash_id" => $request->bank,
-            "diskonrupiah" => $request->nilaibayar * ($request->diskon / 100),
+            "diskonrupiah" => $request->nilaibayar*($request->diskon/100),
             "diskonpersen" => $request->diskon,
-            "createdBy" => $request->createdBy,
-        ];
+            "createdBy" => $request->createdBy
+		];
 
-        $response = $this->getData("sales-order-header/" . $request->sales);
+        $response = $this->getData("sales-order-header/".$request->sales);
         if ($response->payment_remain > 0) {
             $this->post("sales-invoice-payment", $body);
             $update["payment_remain"] = $response->payment_remain - $request->nilaibayar;
-            $response = $this->put("sales-order-header/" . $request->sales, $update);
+            $response = $this->put("sales-order-header/".$request->sales, $update);
         }
         return redirect()->back()->with("message", "Pembayaran Berhasil");
     }
@@ -74,11 +73,8 @@ class PiutangController extends Controller
      */
     public function show($id)
     {
-        $data = SalesInvoicePayment::with("sales.customer")
-            ->where("sales_order_header_id", $id)
-            ->get();
-
-        return view("pembayaran.hutang", compact("data"));
+        $response = $this->get("sales-invoice-payment/$id");
+        return view("piutang.edit",$response);
     }
 
     /**
@@ -89,8 +85,7 @@ class PiutangController extends Controller
      */
     public function edit($id)
     {
-        $response = $this->get("sales-invoice-payment/$id");
-        return view("piutang.edit", $response);
+        //
     }
 
     /**
@@ -103,7 +98,7 @@ class PiutangController extends Controller
     public function update(Request $request, $id)
     {
         $response = $this->put("sales-invoice-payment/$id", $request->all());
-        return view("piutang.edit", $response);
+        return view("piutang.edit",$response);
     }
 
     /**
@@ -115,36 +110,26 @@ class PiutangController extends Controller
     public function destroy($id)
     {
 
-        $response = $this->delete("sales-invoice-payment/$id");
-        return $response;
-    }
+       $response = $this->delete("sales-invoice-payment/$id");
+       return $response;
+   }
 
-    public function search(Request $request)
-    {
-        $body["key"] = [
-            $request->key,
-        ];
-        $body["operator"] = [
-            "=",
-        ];
-        $body["value"] = [
-            $request->search,
-        ];
-        $response = $this->client()->get("sales-invoice-payment/search", [
-            "json" => $body,
-        ]);
+   public function search(Request $request)
+   {
+    $body["key"]=[
+        $request->key
+    ];
+    $body["operator"]=[
+        "="
+    ];
+    $body["value"]=[
+        $request->search
+    ];
+    $response = $this->client()->get("sales-invoice-payment/search", [
+        "json"=>$body
+    ]);
 
-        $data["data"] = json_decode($response->getBody())->data;
-        return view("piutang.index", $data);
-    }
-
-    public function markfordelete()
-    {
-        $SO = SalesOrderHeader::all();
-        foreach ($SO as $sales) {
-            $data = SalesInvoicePayment::with("sales.customer")
-                ->where("sales_order_header_id", $sales->id)
-                ->get();
-        }
-    }
+    $data["data"] =  json_decode($response->getBody())->data;
+    return view("piutang.index", $data);
+}
 }

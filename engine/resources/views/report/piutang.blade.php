@@ -2,7 +2,7 @@
 
 <section class=" table-responsive">
   <htmlpageheader name="page-header">
-    <h4>Laporan Piutang Per Tanggal {{$tanggalstart}} - {{$tanggalend}}</h4>
+    <h4>Laporan Piutang {{$filter}} Per Tanggal {{$tanggalstart}} - {{$tanggalend}}</h4>
     @if(isset($user))
     <h5>Sales: {{$user->displayName}}</h5>
     @endif
@@ -55,7 +55,7 @@
             <?php
             $totaltagihan +=$key->totalsales + $key->retur + $key->diskon;
             $totalbayar +=$key->totalpaid;
-            $totalsisabayar +=$key->paymentremain;
+            $totalsisabayar +=$key->payment_remain;
             $totalretur +=$key->retur;
             ?>
             <tr >
@@ -64,7 +64,7 @@
               <td class="printAngka">{{$key->totalsales}}</td>
               <td class="printAngka">{{$key->retur}}</td>
               <td class="printAngka">{{$key->totalpaid}}</td>
-              <td class="printAngka">{{$key->paymentremain}}</td>
+              <td class="printAngka">{{$key->payment_remain}}</td>
 
             </tr>
             @endforeach

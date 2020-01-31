@@ -1,6 +1,6 @@
 @extends("layouts.main")
 @section("title")
-Penerimaan
+Penerimaan 
 @endsection
 @section("content")
 <div class="page-content-wrapper">
@@ -99,16 +99,10 @@ Penerimaan
 						<td onclick="detail({{$key -> id}},'penerimaan')" class="printUang">{{$key->paid_total}}</td>
 						<td onclick="detail({{$key -> id}},'penerimaan')" class="">{{$key->createdBy}}</td>
 						<td class="">
-							<a style="min-width:30px" class="btn btn-xs btn-info dis"
-								href="{{url("hutang/$key->id")}}">Pembayaran</a>
-							<a style="min-width:30px" class="btn btn-xs btn-info dis"
-								href="{{url("penerimaan/$key->id/edit")}}">Edit</a>
-							<a style="min-width:30px" class="btn btn-xs btn-danger dis" href="#"
-								onclick="konfirmasi({{$key->id}},'penerimaan')" style="width: 100%">Delete</a></td>
+							<a class="btn btn-xs btn-info dis" href="{{url("penerimaan/$key->id/edit")}}">Edit</a>
+							<button class="btn btn-xs btn-danger dis" onclick="konfirmasi({{$key->id}},'penerimaan')"
+								style="width: 100%">Delete</button></td>
 					</tr>
-
-
-
 					@endforeach
 
 				</tbody>
