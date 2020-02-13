@@ -197,6 +197,7 @@
 				$("#var20").val(response["purchase_price"]);
 				$("#sell_price").val(response["sell_price"]);
 				$("#buyprice").val(response["purchase_price"]);
+				maxStock = response["qty"];
 				if(response["qty"] <= 0){
 					swal("Jumlah Stock 0. Harap melakukan pembelian terlebih dahulu");
 					$("#cekcek").hide();

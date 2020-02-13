@@ -37,6 +37,12 @@ class SalesOrderLineController extends Controller
             $salesheader->total_sales += $selisihtotal;
             $salesheader->payment_remain += $selisihtotal;
             $salesheader->save();
+
+            // $data = MD::create($item);
+            $item_stock = ItemStock::find($data->item_stock_id);
+            $item_stock->qty -= $request->qty;
+            $item_stock->save();
+        
         } else {
             foreach ($request->data as $item) {
             $data = MD::create($item);

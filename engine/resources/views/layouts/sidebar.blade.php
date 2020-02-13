@@ -176,7 +176,7 @@
 
 				<a href="javascript:"><span class="title ">Gudang</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-procedures"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("gudang") }}">Lihat Data</a>
@@ -191,7 +191,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Merk</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-clinic-medical"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("merk") }}">Lihat Data</a>
@@ -206,7 +206,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Kategori</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-clinic-medical"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("kategori") }}">Lihat Data</a>
@@ -221,7 +221,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Barang</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-clinic-medical"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("barang") }}">Lihat Data</a>
@@ -236,8 +236,14 @@
 			<li>
 				<a href="javascript:"><span class="title ">Stok Barang</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-clinic-medical"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
+					@if(Auth::user()->id==1 || Auth::user()->id==14)
+					<li>
+						<a href="{{ url("stock/sync") }}">Stok Bermasalah</a>
+						<span class="icon-thumbnail">L1</span>
+					</li>
+					@endif
 					<li>
 						<a href="{{ url("stok") }}">Lihat Data</a>
 						<span class="icon-thumbnail">L1</span>
@@ -251,7 +257,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Konsumen</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-capsules"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("konsumen") }}">Lihat Data</a>
@@ -266,7 +272,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Supplier</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-briefcase"></i></span>
+				<span class="icon-thumbnail"><i class="e"></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("supplier") }}">Lihat Data</a>
@@ -281,7 +287,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Inventaris</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-users"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("inventaris/") }}">Lihat Data</a>
@@ -296,7 +302,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Karyawan</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-stethoscope"></i></span>
+				<span class="icon-thumbnail"><i class="ope"></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("karyawan") }}">Lihat Data</a>
@@ -311,7 +317,7 @@
 			<li>
 				<a href="javascript:"><span class="title ">Jabatan</span>
 					<span class="arrow"></span></a>
-				<span class="icon-thumbnail"><i class="fas fa-laptop-medical"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 				<ul class="sub-menu">
 					<li>
 						<a href="{{ url("role") }}">Lihat Data</a>
@@ -326,12 +332,12 @@
 			<li>
 				<a href="{{ url("report") }}"><span class="title ">Laporan</span>
 				</a>
-				<span class="icon-thumbnail"><i class="fas fa-file"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 			</li>
 			<li>
 				<a href="{{ url("pengaturan") }}"><span class="title ">Pengaturan</span>
 				</a>
-				<span class="icon-thumbnail"><i class="fas fa-gear"></i></span>
+				<span class="icon-thumbnail"><i class=""></i></span>
 			</li>
 		</ul>
 		<div class="clearfix"></div>

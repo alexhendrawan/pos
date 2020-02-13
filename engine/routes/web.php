@@ -26,6 +26,7 @@ Route::prefix('print/faktur')->group(function () {
     Route::get('retur-penjualan/{id}', "LaporanController@printfakturreturpenjualan");
 });
 
+
 Route::prefix('api/v1')->group(function () {
     Route::get("update/modal", "Api\CustomerShipmentHeaderController@updatemodal");
     Route::get("update/hargabeli", "Api\ItemStockController@updatehargabeli");
@@ -171,6 +172,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("ajax/returnsupplierhistory/{invenid}/{supplierid}", "AjaxController@getReturnSupplierHistory");
 
     //Additional
+    
+    Route::get("stock/sync","StokController@sync");
+    Route::post("stock/sync","StokController@applysync");
     Route::get("penjualan/search", "PenjualanController@search");
     Route::get("piutang/search", "PiutangController@search");
     Route::get("po/detail/{id}", "POController@detail");

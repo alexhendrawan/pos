@@ -105,7 +105,7 @@ Stock Opname
 	$(window).keydown(function (event) {
 		if (event.keyCode == 13) {
 
-			if ($("#var5").val() != 0) {
+			if ($("#var5").val() >= 0) {
 				var table = document.getElementById("myTable");
 				var row = table.insertRow();
 				row.setAttribute('id', 'row' + count);

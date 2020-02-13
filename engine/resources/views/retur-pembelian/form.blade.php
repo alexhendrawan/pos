@@ -119,6 +119,8 @@ Retur Pembelian
 @push("js")
 
 <script type="text/javascript">
+	var maxStock = 0;
+
 	$('.supplier').select2({
 		selectOnClose: true,
 		placeholder: 'Pilih Supplier',
@@ -233,30 +235,47 @@ Retur Pembelian
 	flagrow = 0;
 
 $(".stocks").change(function () {
+	maxStock = 0;
     flagrow = 0;
+
+
     $.ajax({
         url: "{!! url('/') !!}" + '/ajax/po_line/' + $(".stocks").val() + '/inventoryproperty',
         method: "get",
         success: function (response) {
             $("#hargaretur").val(response.price_per_satuan_id);
-    
+    	console.dir(response);
         },
         error: function (xhr, statusCode, error) { }
     });
+
+    	$.ajax({
+			url: "{!! url('/') !!}" + "/ajax/itemstock/" + $(".stocks").val(),
+			method: "get",
+			success: function (response) {
+				maxStock = response["qty"];
+				if(response["qty"] <= 0){
+					swal("Jumlah Stock 0. Harap melakukan pembelian terlebih dahulu");
+				}
+			},
+			error: function (xhr, statusCode, error) {
+			}
+		});
 });
 
 var count = 1;
 var total = 0;
 $(window).keydown(function (event) {
     if (event.keyCode == 13) {
+    	  if (maxStock <= 0 || maxStock < $("#var4").val()) {
+                    swal("Barang Minus / Tidak Cukup, Harap diperbaiki terlebih dahulu");
+                    
+                }else{
         $.ajax({
             url: "{!! url('/') !!}" + "/ajax/itemstock/" + $(".stocks").val(),
             method: "get",
             success: function (data) {
-                if (data["qty"] <= 0) {
-                    swal("Barang Minus, Harap diperbaiki terlebih dahulu");
-                    
-                }else{
+              
 					var harga = 0;
 
                     var table = document.getElementById("myTable");
@@ -312,11 +331,11 @@ $(window).keydown(function (event) {
 
                     $(".gtotalreturtext").text(addDecimal(total));
                     updateRowOrder();
-				}
             },
             error: function (xhr, statusCode, error) {
             }
         });
+				}
     }
 });
 </script>

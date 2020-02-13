@@ -120,7 +120,7 @@ class PurchaseInvoiceHeaderController extends Controller
 	        $line = PurchaseInvoiceLine::where("purchase_invoice_header_id","=",$id)->get();
 	        foreach ($line as $item) {
 	        	$poline = POLine::find($item->po_line_id)->first();
-	        	$stock = ItemStock::where("item_id","=",$poline->inventory_property_id)->first();
+	        	$stock = ItemStock::find($poline->item_stock_id);
 	        	$stock->qty -= $item->qty;
 	        	$stock->save();
 	        	$item->delete();

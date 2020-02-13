@@ -5,7 +5,7 @@
   @section("content")
   <div class="page-content-wrapper">
     <div class="container-fluid">
-     <form method="post" action="{{url('/')}}/user/{{$data->id}}">
+     <form method="post" action="{{url('/')}}/karyawan/{{$data->id}}">
         @csrf
         @method("PUT")
         <div class="col-md-12 col-xs-12">
@@ -29,13 +29,13 @@
             </div>
             <div class="form-group">
                 Role:
-                <select name="role" class="role form-control" required="">
+                <select name="role_id" class="role form-control" required="">
 
                 </select>
             </div>
             <div class="form-group">
                 Password Lama:
-                <input autocomplete="off" type="password" name="tes" class="form-control" required="">
+                <input autocomplete="off" type="password" name="password" class="form-control" required="">
             </div>
 
             <div class="form-group">

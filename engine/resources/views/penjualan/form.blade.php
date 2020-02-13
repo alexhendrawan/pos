@@ -42,10 +42,11 @@ Penjualan
 	var count = 1;
 	var realcount = 0;
 	var flagrow = 0;
+	var maxStock = 0;
 	$(window).keydown(function (event) {
 		if (event.keyCode == 13) {
 			if(flagrow != count){
-
+				if($("#var5").val() <= maxStock){
 			if (realcount < 16 && $("#var5").val() != 0) {
 				var table = document.getElementById("myTable");
 				var row = table.insertRow();
@@ -134,6 +135,9 @@ Penjualan
 			} else {
 				swal("kuantitas harus di isi");
 			}
+		}else{
+			swal("kuantitas penjualan melebihi stok "+ maxStock);
+		}
 			$(".stock").select2("open");
 		}else{
 			swal("Barang Minus, Harap diperbaiki terlebih dahulu");

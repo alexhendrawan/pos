@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\CustomerReturnLine;
+use App\ItemStock as MD;
+use App\POLine;
+use App\SalesOrderLine;
+use App\StockMutation;
+use App\SupplierReturnLine;
 use Illuminate\Http\Request;
 
 class StokController extends Controller
@@ -128,4 +134,106 @@ class StokController extends Controller
         $response = $this->client()->delete("item-stock/$id");
         return $response;
     }
+
+    public function sync()
+    {
+        $dataStock = MD::with("inventoryproperty.item")->get();
+        foreach ($dataStock as $key) {
+            $qtyawal = 0;
+            $tanggalpatokan = "2020-01-08 00:00:00";
+
+            $opname = StockMutation::where("item_stock_id", $key->id)->orderby("createdOn", "desc")->first();
+            if ($opname != null) {
+                $tanggalpatokan = $opname->createdOn;
+                $qtyawal = $opname->qty;
+            }
+            $data["opname"] = StockMutation::where("item_stock_id", $key->id)->orderby("createdOn", "desc")->first();
+            $penjualan = SalesOrderLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+
+            $pembelian = POLine::select("purchase_invoice_line.qty as qty")
+                ->join("purchase_invoice_line", "purchase_invoice_line.po_line_id", "po_line.id")
+                ->where("item_stock_id", $key->id)
+                ->where("po_line.createdOn", ">", $tanggalpatokan)
+                ->orderby("po_line.createdOn", "desc")
+                ->sum("qty");
+
+            $rpn = CustomerReturnLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+
+            $rpb = SupplierReturnLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+            $key["detail"] = $qtyawal + $pembelian + $rpn - $penjualan - $rpb;
+        }
+        $array = array();
+        foreach ($dataStock as $key) {
+            if ($key->detail != $key->qty || $key->qty < 0) {
+                array_push($array, $key);
+            }
+        }
+        return view("stok.sync", compact("array"));
+    }
+
+    public function applysync()
+    {
+        $dataStock = MD::with("inventoryproperty.item")->get();
+        foreach ($dataStock as $key) {
+            $qtyawal = 0;
+            $tanggalpatokan = "2020-01-08 00:00:00";
+
+            $opname = StockMutation::where("item_stock_id", $key->id)->orderby("createdOn", "desc")->first();
+            if ($opname != null) {
+                $tanggalpatokan = $opname->createdOn;
+                $qtyawal = $opname->qty;
+            }
+            $penjualan = SalesOrderLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+
+            $pembelian = POLine::select("purchase_invoice_line.qty as qty")
+                ->join("purchase_invoice_line", "purchase_invoice_line.po_line_id", "po_line.id")
+                ->where("item_stock_id", $key->id)
+                ->where("po_line.createdOn", ">", $tanggalpatokan)
+                ->orderby("po_line.createdOn", "desc")
+                ->sum("qty");
+
+            $rpn = CustomerReturnLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+
+            $rpb = SupplierReturnLine::select("qty")
+                ->where("item_stock_id", $key->id)
+                ->where("createdOn", ">", $tanggalpatokan)
+                ->orderby("createdOn", "desc")
+                ->sum("qty");
+
+            $qtyManual = $qtyawal + $pembelian + $rpn - $penjualan - $rpb;
+            if ($qtyManual != $key->qty) {
+
+                StockMutation::create([
+                    "notes" => "Sync Item Stock",
+                    "qty" => $qtyManual,
+                    "qty_before" => $key->qty,
+                    "item_stock_id" => $key->id,
+                ]);
+                $key->qty = $qtyManual;
+                $key->save();
+            }
+        }
+        return redirect("stok");
+    }
+
 }

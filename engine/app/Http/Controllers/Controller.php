@@ -18,10 +18,8 @@ class Controller extends BaseController
     // }
     public function client()
     {
-
         $client = new Client([
-            // 'base_uri' =>'http://localhost/api/v1/',
-            'base_uri' => 'http://localhost/kemilau/api/v1/',
+	            'base_uri' => url('/')."/api/v1/",
             'headers' => [
                 'Content-Type' => 'application/json',
                 // ,
